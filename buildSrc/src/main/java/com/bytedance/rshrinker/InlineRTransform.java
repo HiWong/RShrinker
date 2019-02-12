@@ -34,7 +34,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -48,8 +51,8 @@ class InlineRTransform extends Transform {
 
     InlineRTransform(ShrinkerExtension config) {
         this.config = config;
+        InlineContext.config = config;
     }
-
     @Override
     public String getName() {
         return "inlineR";
@@ -102,9 +105,7 @@ class InlineRTransform extends Transform {
         String buildType = styleables.getParentFile().getName();
         outputProvider.deleteAll();
         Collection<TransformInput> inputs = transformInvocation.getInputs();
-        //TODO 注意:下面这个就表示，如果是debug的话，就不进行内联
-        //if (config.inlineR && !Objects.equals(buildType, "debug")) {
-        if (config.inlineR&&!config.skipDebugInlineR) {
+        if (shouldInline(buildType)) {
             RSymbols rSymbols = new RSymbols().from(inputs);
             if (!rSymbols.isEmpty()) {
                 new WriteStyleablesProcessor(rSymbols, styleables).proceed();
@@ -153,6 +154,17 @@ class InlineRTransform extends Transform {
             });
         }
         ShrinkerPlugin.logger.info("{} copy files {} ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
+    }
+
+    private boolean shouldInline(String buildType) {
+        if (!config.inlineR) {
+            return false;
+        }
+        //TODO 这种判断方式不严谨，后面要改为使用variantScope.getVairantConfiguration().getBuildType().isDebuggable()来判断
+        if (Objects.equals(buildType, "debug") && config.skipDebugInlineR) {
+            return false;
+        }
+        return true;
     }
 
 }

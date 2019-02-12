@@ -96,9 +96,12 @@ class RSymbols {
     }
 
     private void drainSymbols(Path file) {
-        System.out.println("RSymbols.drainSymbols()");
+
         final String filename = file.getFileName().toString();
         String typeName = filename.substring(0, filename.length() - ".class".length());
+        //typeName是类似R$bool, R$id这样的
+        System.out.println("RSymbols.drainSymbols()，typeName:"+typeName);
+
         byte[] bytes;
         try {
             bytes = Files.readAllBytes(file);
