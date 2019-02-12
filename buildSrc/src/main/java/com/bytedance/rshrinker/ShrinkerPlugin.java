@@ -17,6 +17,7 @@
 package com.bytedance.rshrinker;
 
 import com.android.build.gradle.AppExtension;
+import com.android.build.gradle.AppPlugin;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -32,13 +33,17 @@ public class ShrinkerPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         System.out.println("ShrinkerPlugin.apply()");
-        /*
         if (!project.getPlugins().hasPlugin(AppPlugin.class)) {
             throw new UnsupportedOperationException("Plugin 'shrinker' can only apply with 'com.android.application'");
         }
-        */
         AppExtension android = project.getExtensions().getByType(AppExtension.class);
-        ShrinkerExtension config = project.getExtensions().create("shrinker", ShrinkerExtension.class);
+        ShrinkerExtension config = project.getExtensions().create("rshrink", ShrinkerExtension.class);
         android.registerTransform(new InlineRTransform(config));
+
+        project.afterEvaluate(it -> {
+                    InlineContext.parseShrinkerExtension();
+                }
+        );
+
     }
 }

@@ -28,6 +28,29 @@ public class ShrinkerExtension {
     /**
      * 使用类似skipPkgs=["com.baidu.swan","com.baidu.searchbox"]这样
      */
-    public List<String> skipPkgs;
+    public List<String> skipRPkgs;
 
+    public boolean isInlineR() {
+        return inlineR;
+    }
+
+    public void setInlineR(boolean inlineR) {
+        this.inlineR = inlineR;
+    }
+
+    public boolean isSkipDebugInlineR() {
+        return skipDebugInlineR;
+    }
+
+    public void setSkipDebugInlineR(boolean skipDebugInlineR) {
+        this.skipDebugInlineR = skipDebugInlineR;
+    }
+
+    public List<String> getSkipRPkgs() {
+        return skipRPkgs;
+    }
+
+    public void setSkipRPkgs(List<String> skipRPkgs) {
+        this.skipRPkgs = skipRPkgs;
+    }
 }

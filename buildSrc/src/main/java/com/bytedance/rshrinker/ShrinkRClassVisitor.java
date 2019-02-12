@@ -39,9 +39,30 @@ class ShrinkRClassVisitor extends ClassVisitor {
      * @return true if name matches pattern like {@code .+/R$.+}
      */
     static boolean isRClass(String className) {
+        //输出类似android/support/constraint/R$id或者android/support/transition/TransitionManager
+        System.out.println("isRClass(),className:" + className);
         int $ = className.lastIndexOf('$');
         int slash = className.lastIndexOf('/', $);
         return $ > slash && $ < className.length() && (className.charAt(slash + 1) | className.charAt($ - 1)) == 'R';
+    }
+
+    /**
+     * 注意:由于isRClass()的判断总在shouldSkip()前面，根据短路原则，这里其实只会判断R文件
+     * @param className
+     * @return
+     */
+    static boolean shouldSkip(String className) {
+        System.out.println("shouldSkip,className:" + className);
+        if (InlineContext.config.skipRPkgs == null) {
+            return false;
+        }
+        for (String pkg : InlineContext.config.skipRPkgs) {
+            if (className.startsWith(pkg)) {
+                System.out.println(className + " skiped!");
+                return true;
+            }
+        }
+        return false;
     }
 
     ShrinkRClassVisitor(ClassWriter cv, RSymbols rSymbols) {
@@ -64,7 +85,7 @@ class ShrinkRClassVisitor extends ClassVisitor {
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         if (access == 0x19 /*ACC_PUBLIC | ACC_STATIC | ACC_FINAL*/
-                && isRClass(name)) {  //KP 如果是R文件，就直接返回，这样就可以将R文件去除掉？是这个逻辑吗？
+                && isRClass(name) && !shouldSkip(name)) {  //KP 如果是R文件，就直接返回，这样就可以将R文件去除掉？是这个逻辑吗？
             logger.debug("remove visit inner class {} in {}", name, classname);
             return;
         }
