@@ -28,9 +28,9 @@ repositories{
 uploadArchives{
     repositories.mavenDeployer{
         repository(url:'http://maven.byted.org/repository/life/'){
-            authentication(userName:'deploy',password:'bytedance123')
+            authentication(userName:"$USER_NAME",password:"$PASS")
         }
-        pom.groupId='com.bytedance.rshrinker'
+        pom.groupId='com.bytedance.life.shrink'
         pom.artifactId='plugin'
         pom.version='0.3.4'
     }
