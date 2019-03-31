@@ -37,10 +37,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 class JarProcessor extends ClassesProcessor {
 
     JarProcessor(Function<byte[], byte[]> classTransform, Path src, Path dst) {

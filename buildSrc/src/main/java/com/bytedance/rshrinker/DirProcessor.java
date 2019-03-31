@@ -31,10 +31,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 class DirProcessor extends ClassesProcessor {
     private static PathMatcher CASE_R_FILE =
             FileSystems.getDefault().getPathMatcher("regex:^R\\.class|R\\$[a-z]+\\.class$");

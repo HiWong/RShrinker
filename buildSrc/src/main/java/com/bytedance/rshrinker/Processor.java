@@ -16,10 +16,6 @@
 
 package com.bytedance.rshrinker;
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 interface Processor {
 
     void proceed();

@@ -25,9 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author yrom
- */
+
 final class InlineRProcessor implements Processor {
     private Collection<TransformInput> inputs;
     private Function<QualifiedContent, Path> getTargetPath;

@@ -17,9 +17,6 @@ package com.bytedance.rshrinker;
 
 import java.util.List;
 
-/**
- * @author yrom.
- */
 public class ShrinkerExtension {
     public boolean inlineR = true;
 

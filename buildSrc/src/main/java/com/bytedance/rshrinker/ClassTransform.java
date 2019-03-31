@@ -25,9 +25,6 @@ import java.util.function.Function;
 import static org.objectweb.asm.ClassReader.SKIP_DEBUG;
 import static org.objectweb.asm.ClassReader.SKIP_FRAMES;
 
-/**
- * @author yrom
- */
 class ClassTransform implements Function<byte[], byte[]> {
     private RSymbols rSymbols;
 

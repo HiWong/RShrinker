@@ -25,10 +25,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 class ShrinkRClassVisitor extends ClassVisitor {
 
     private String classname;

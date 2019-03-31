@@ -24,12 +24,6 @@ import static com.bytedance.rshrinker.ShrinkRClassVisitor.isRClass;
 import static com.bytedance.rshrinker.ShrinkRClassVisitor.shouldSkip;
 
 
-/**
- * Check class if attempt to access R.
- *
- * @author yrom
- * @version 2017/11/29
- */
 class PredicateClassVisitor extends ClassVisitor {
     private boolean attemptToVisitR;
 

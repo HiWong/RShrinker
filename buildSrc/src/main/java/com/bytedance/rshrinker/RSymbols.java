@@ -44,9 +44,6 @@ import java.util.stream.Stream;
 import static org.objectweb.asm.ClassReader.SKIP_DEBUG;
 import static org.objectweb.asm.ClassReader.SKIP_FRAMES;
 
-/**
- * @author yrom
- */
 class RSymbols {
     /**
      * default package!

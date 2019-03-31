@@ -23,9 +23,7 @@ import com.bytedance.rshrinker.log.Logger;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
-/**
- * @author yrom.
- */
+
 public class ShrinkerPlugin implements Plugin<Project> {
 
     @Override
