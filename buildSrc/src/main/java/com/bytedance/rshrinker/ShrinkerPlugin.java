@@ -18,21 +18,19 @@ package com.bytedance.rshrinker;
 
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.AppPlugin;
+import com.bytedance.rshrinker.log.Logger;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
 
 /**
  * @author yrom.
  */
 public class ShrinkerPlugin implements Plugin<Project> {
-    static final Logger logger = Logging.getLogger(ShrinkerPlugin.class);
 
     @Override
     public void apply(Project project) {
-        System.out.println("ShrinkerPlugin.apply()");
+        Logger.d("ShrinkerPlugin.apply()");
         if (!project.getPlugins().hasPlugin(AppPlugin.class)) {
             throw new UnsupportedOperationException("Plugin 'shrinker' can only apply with 'com.android.application'");
         }

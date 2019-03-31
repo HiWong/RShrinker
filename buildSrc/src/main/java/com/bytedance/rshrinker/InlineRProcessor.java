@@ -43,7 +43,6 @@ final class InlineRProcessor implements Processor {
 
     @Override
     public void proceed() {
-        System.out.println("InlineRProcessor.proceed()");
         Stream.concat(
                 streamOf(inputs, TransformInput::getDirectoryInputs).map(input -> {
                     Path src = input.getFile().toPath();

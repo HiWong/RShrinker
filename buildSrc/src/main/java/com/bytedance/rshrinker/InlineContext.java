@@ -1,5 +1,7 @@
 package com.bytedance.rshrinker;
 
+import com.bytedance.rshrinker.log.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class InlineContext {
         config.skipRPkgs = pkgs;
 
         config.skipRPkgs.forEach(pkg ->
-                System.out.println("after parse,pkg:" + pkg)
+                Logger.i("after parse,pkg:" + pkg)
         );
 
     }

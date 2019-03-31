@@ -73,7 +73,6 @@ class RSymbols {
     }
 
     public RSymbols from(Collection<TransformInput> inputs) {
-        System.out.println("RSymbols.from()");
         final PathMatcher rClassMatcher = FileSystems.getDefault().getPathMatcher("glob:R$*.class");
         final List<Path> paths = inputs.stream()
                 .map(TransformInput::getDirectoryInputs)
@@ -100,7 +99,6 @@ class RSymbols {
         final String filename = file.getFileName().toString();
         String typeName = filename.substring(0, filename.length() - ".class".length());
         //typeName是类似R$bool, R$id这样的
-        System.out.println("RSymbols.drainSymbols()，typeName:"+typeName);
 
         byte[] bytes;
         try {
@@ -114,7 +112,6 @@ class RSymbols {
                 // read constant value
                 if (value instanceof Integer) {
                     String key = typeName + '.' + name;
-                    System.out.println("key:" + key + ",value:" + value);
                     Integer old = symbols.get(key);
                     if (old != null && !old.equals(value)) {
                         throw new IllegalStateException("Value of " + key + " mismatched! "
