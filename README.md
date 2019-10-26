@@ -1,30 +1,7 @@
 ## 说明
 
-RShrinker是在编译时通过扫描所有的R文件，然后将所有类中的R字段替换为常量，并且将R文件去除，以达到减少包大小的目的，目前测试**在项目中可减少debug包0.7M,release包0.5M.**
+RShrinker是在编译时通过扫描所有的R文件，然后将所有类中的R字段替换为常量，并且将R文件去除，以达到减少包大小的目的.
 
-## 接入
-
-maven仓库地址:
-
-```groovy
-  maven {
-            url 'http://maven.byted.org/repository/life/'
-        }
-```
-
-classpath:
-
-```groovy
-classpath 'wang.imallen.blog.rshrink:plugin:0.3.4'
-```
-
-## 运用
-
-在application module中的build.gradle中添加:
-
-```groovy
-apply plugin: 'wang.imallen.blog.rshrinker'
-```
 
 为了进行更灵活地控制，添加了rshinker这个Extension,如下是一个典型配置:
 
