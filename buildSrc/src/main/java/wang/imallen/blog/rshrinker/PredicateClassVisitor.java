@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import static com.bytedance.rshrinker.ShrinkRClassVisitor.isRClass;
-import static com.bytedance.rshrinker.ShrinkRClassVisitor.shouldSkip;
 
-
-/**
- * Check class if attempt to access R.
- *
- * @author yrom
- * @version 2017/11/29
- */
 class PredicateClassVisitor extends ClassVisitor {
     private boolean attemptToVisitR;
 
@@ -45,7 +36,7 @@ class PredicateClassVisitor extends ClassVisitor {
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         if (!attemptToVisitR
                 && access == 0x19 /*ACC_PUBLIC | ACC_STATIC | ACC_FINAL*/
-                && isRClass(name) && !shouldSkip(name)) {
+                && ShrinkRClassVisitor.isRClass(name) && !ShrinkRClassVisitor.shouldSkip(name)) {
             attemptToVisitR = true;
         }
     }
@@ -66,7 +57,7 @@ class PredicateClassVisitor extends ClassVisitor {
                     return;
                 }
 
-                attemptToVisitR = isRClass(owner) && !shouldSkip(owner);
+                attemptToVisitR = ShrinkRClassVisitor.isRClass(owner) && !ShrinkRClassVisitor.shouldSkip(owner);
             }
         };
     }

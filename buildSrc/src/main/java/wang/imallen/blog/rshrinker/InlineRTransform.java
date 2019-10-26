@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import com.android.build.api.transform.DirectoryInput;
 import com.android.build.api.transform.Format;
@@ -25,6 +25,7 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
+import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -34,9 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -89,15 +88,15 @@ class InlineRTransform extends Transform {
 
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        System.out.println("InlineTransform.transform()");
+        Logger.d("InlineTransform.transform()");
         if (!config.inlineR) {
-            ShrinkerPlugin.logger.lifecycle("skip inlineR transform!");
+            Logger.life("skip inlineR transform!");
             return;
         }
         if (transformInvocation.isIncremental()) {
             throw new UnsupportedOperationException("Unsupported incremental build!");
         }
-        System.out.println("InlineTransform-->now start to transform");
+        Logger.i("InlineTransform-->now start to transform");
         long start = System.currentTimeMillis();
         TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
         // transforms/${name}/${buildType}/${index of 'styleables'}
@@ -124,7 +123,7 @@ class InlineRTransform extends Transform {
                     return f.toPath();
                 };
                 new InlineRProcessor(inputs, new ClassTransform(rSymbols), call).proceed();
-                ShrinkerPlugin.logger.lifecycle("{} consume {}ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
+                Logger.life("{} consume {}ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
                 return;
             }
         }
@@ -153,7 +152,7 @@ class InlineRTransform extends Transform {
                 }
             });
         }
-        ShrinkerPlugin.logger.info("{} copy files {} ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
+        Logger.i("{} copy files {} ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
     }
 
     private boolean shouldInline(String buildType) {

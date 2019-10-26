@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
+import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -30,10 +31,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 class DirProcessor extends ClassesProcessor {
     private static PathMatcher CASE_R_FILE =
             FileSystems.getDefault().getPathMatcher("regex:^R\\.class|R\\$[a-z]+\\.class$");
@@ -63,7 +60,7 @@ class DirProcessor extends ClassesProcessor {
         if (Files.isDirectory(source)) {
             new DirProcessor(classTransform, source, target).proceed();
         } else if (Files.isRegularFile(source)) {
-            log.debug("transform file {}... ", source);
+            Logger.d("transform file {}... ", source);
             try {
                 if (Files.notExists(dst)) {
                     Files.createDirectories(dst);
@@ -78,7 +75,7 @@ class DirProcessor extends ClassesProcessor {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             } catch (Exception e) {
-                log.warn("error occurred on " + source, e);
+                Logger.d("error occurred on " + source, e);
                 throw e;
             }
         }

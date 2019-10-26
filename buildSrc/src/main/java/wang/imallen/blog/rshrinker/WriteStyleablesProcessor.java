@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -26,10 +26,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.Map;
 
-/**
- * @author yrom
- * @version 2018/1/9
- */
 final class WriteStyleablesProcessor implements Processor {
     private RSymbols symbols;
     private File dir;

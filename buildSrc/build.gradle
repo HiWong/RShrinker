@@ -1,21 +1,21 @@
 apply plugin: 'groovy'
-//apply plugin: 'java-library'
 apply plugin: 'maven'
+
+apply from:'http://tosv.byted.org/obj/ttclient-android/upload.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile gradleApi()
-    compile localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
 
-    compile "com.android.tools.build:gradle:3.1.4"
-    //compileOnly "com.android.tools.build:gradle:3.0.1"
+    implementation "com.android.tools.build:gradle:3.4.2"
 
-    compile "com.google.code.gson:gson:2.8.0"
+    implementation "com.google.code.gson:gson:2.8.0"
 
-    compile 'org.javassist:javassist:3.20.0-GA'
+    implementation 'org.javassist:javassist:3.20.0-GA'
 
-    compile 'org.ow2.asm:asm:5.0.1'
+    implementation 'org.ow2.asm:asm:5.0.1'
 
 }
 
@@ -25,16 +25,19 @@ repositories{
     jcenter()
 }
 
+
+//注释以防止跟upload.gradle中的上传配置冲突
 uploadArchives{
     repositories.mavenDeployer{
         repository(url:'http://maven.byted.org/repository/life/'){
             authentication(userName:"$USER_NAME",password:"$PASS")
         }
-        pom.groupId='com.bytedance.life.shrink'
+        pom.groupId='wang.imallen.blog.shrink'
         pom.artifactId='plugin'
-        pom.version='0.3.4'
+        pom.version='0.3.5'
     }
 }
+
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"

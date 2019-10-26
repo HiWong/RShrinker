@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
-import org.gradle.api.logging.Logger;
-
-
-/**
- * @author yrom
- * @version 2017/11/29
- */
 interface Processor {
-
-    Logger log = ShrinkerPlugin.logger;
 
     void proceed();
 }

@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
-import org.gradle.api.logging.LogLevel;
+import wang.imallen.blog.rshrinker.log.Logger;
+
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import static com.bytedance.rshrinker.ShrinkerPlugin.logger;
 
-
-/**
- * @author yrom
- * @version 2017/11/29
- */
 class ShrinkRClassVisitor extends ClassVisitor {
 
     private String classname;
@@ -40,7 +35,7 @@ class ShrinkRClassVisitor extends ClassVisitor {
      */
     static boolean isRClass(String className) {
         //输出类似android/support/constraint/R$id或者android/support/transition/TransitionManager
-        System.out.println("isRClass(),className:" + className);
+        Logger.i("isRClass(),className:" + className);
         int $ = className.lastIndexOf('$');
         int slash = className.lastIndexOf('/', $);
         return $ > slash && $ < className.length() && (className.charAt(slash + 1) | className.charAt($ - 1)) == 'R';
@@ -48,17 +43,18 @@ class ShrinkRClassVisitor extends ClassVisitor {
 
     /**
      * 注意:由于isRClass()的判断总在shouldSkip()前面，根据短路原则，这里其实只会判断R文件
+     *
      * @param className
      * @return
      */
     static boolean shouldSkip(String className) {
-        System.out.println("shouldSkip,className:" + className);
+        Logger.i("shouldSkip,className:" + className);
         if (InlineContext.config.skipRPkgs == null) {
             return false;
         }
         for (String pkg : InlineContext.config.skipRPkgs) {
             if (className.startsWith(pkg)) {
-                System.out.println(className + " skiped!");
+                Logger.i(className + " skiped!");
                 return true;
             }
         }
@@ -73,7 +69,7 @@ class ShrinkRClassVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         classname = name;
-        logger.debug("processing class " + name);
+        Logger.d("processing class " + name);
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
@@ -86,7 +82,7 @@ class ShrinkRClassVisitor extends ClassVisitor {
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         if (access == 0x19 /*ACC_PUBLIC | ACC_STATIC | ACC_FINAL*/
                 && isRClass(name) && !shouldSkip(name)) {  //KP 如果是R文件，就直接返回，这样就可以将R文件去除掉？是这个逻辑吗？
-            logger.debug("remove visit inner class {} in {}", name, classname);
+            Logger.d("remove visit inner class {} in {}", name, classname);
             return;
         }
         cv.visitInnerClass(name, outerName, innerName, access);
@@ -95,7 +91,6 @@ class ShrinkRClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc,
                                      String signature, String[] exceptions) {
-        System.out.println("ShrinkRClassVisitor.visitMethod()");
         return new MethodVisitor(Opcodes.ASM5,
                 super.visitMethod(access, name, desc, signature, exceptions)) {
 
@@ -109,13 +104,13 @@ class ShrinkRClassVisitor extends ClassVisitor {
                 }
                 String typeName = owner.substring(owner.lastIndexOf('/') + 1);
                 String key = typeName + '.' + fieldName;
+
+                System.out.println("typeName:" + typeName + ",key:" + key);
+
                 if (rSymbols.containsKey(key)) {
                     Integer value = rSymbols.get(key);
                     if (value == null)
                         throw new UnsupportedOperationException("value of " + key + " is null!");
-                    if (logger.isEnabled(LogLevel.DEBUG)) {
-                        logger.debug("replace {}.{} to 0x{}", owner, fieldName, Integer.toHexString(value));
-                    }
                     pushInt(this.mv, value);
                 } else if (owner.endsWith("/R$styleable")) { // replace all */R$styleable ref!
                     this.mv.visitFieldInsn(opcode, RSymbols.R_STYLEABLES_CLASS_NAME, fieldName, fieldDesc);

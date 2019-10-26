@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.TransformInput;
@@ -25,9 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author yrom
- */
+
 final class InlineRProcessor implements Processor {
     private Collection<TransformInput> inputs;
     private Function<QualifiedContent, Path> getTargetPath;
@@ -43,7 +41,6 @@ final class InlineRProcessor implements Processor {
 
     @Override
     public void proceed() {
-        System.out.println("InlineRProcessor.proceed()");
         Stream.concat(
                 streamOf(inputs, TransformInput::getDirectoryInputs).map(input -> {
                     Path src = input.getFile().toPath();

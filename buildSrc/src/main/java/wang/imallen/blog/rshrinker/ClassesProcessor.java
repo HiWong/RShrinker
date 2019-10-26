@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
 
-/**
- * @author yrom
- * @version 2017/11/29
- */
 abstract class ClassesProcessor implements Processor {
     protected final Function<byte[], byte[]> classTransform;
     protected final Path src;

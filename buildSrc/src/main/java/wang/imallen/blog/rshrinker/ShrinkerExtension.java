@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import java.util.List;
 
-/**
- * @author yrom.
- */
 public class ShrinkerExtension {
     public boolean inlineR = true;
 

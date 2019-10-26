@@ -1,4 +1,4 @@
-package wang.imallen.blog.rshrinker.demo;
+package wang.imallen.blog.applemodule;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("wang.wang.imallen.blog.rshrinker.demo", appContext.getPackageName());
+        assertEquals("wang.wang.imallen.blog.applemodule.test", appContext.getPackageName());
     }
 }
