@@ -1,6 +1,6 @@
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
-import com.bytedance.rshrinker.log.Logger;
+import wang.imallen.blog.rshrinker.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 interface Processor {
 

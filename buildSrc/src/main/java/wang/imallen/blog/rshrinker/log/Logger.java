@@ -1,4 +1,4 @@
-package com.bytedance.rshrinker.log;
+package wang.imallen.blog.rshrinker.log;
 
 import org.gradle.api.logging.Logging;
 

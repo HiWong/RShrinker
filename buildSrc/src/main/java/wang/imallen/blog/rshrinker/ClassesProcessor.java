@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

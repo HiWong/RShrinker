@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;

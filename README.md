@@ -15,7 +15,7 @@ maven仓库地址:
 classpath:
 
 ```groovy
-classpath 'com.bytedance.life.shrink:plugin:0.3.4'
+classpath 'wang.imallen.blog.rshrink:plugin:0.3.4'
 ```
 
 ## 运用
@@ -23,7 +23,7 @@ classpath 'com.bytedance.life.shrink:plugin:0.3.4'
 在application module中的build.gradle中添加:
 
 ```groovy
-apply plugin: 'com.bytedance.rshrinker'
+apply plugin: 'wang.imallen.blog.rshrinker'
 ```
 
 为了进行更灵活地控制，添加了rshinker这个Extension,如下是一个典型配置:
@@ -32,7 +32,7 @@ apply plugin: 'com.bytedance.rshrinker'
 rshrink{
     inlineR true
     skipDebugInlineR false
-    skipRPkgs=["com.bytedance.blink"]
+    skipRPkgs=["wang.imallen.blog.rshrinker.demo"]
 }
 ```
 

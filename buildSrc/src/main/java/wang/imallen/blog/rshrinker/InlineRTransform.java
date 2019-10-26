@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import com.android.build.api.transform.DirectoryInput;
 import com.android.build.api.transform.Format;
@@ -25,7 +25,7 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
-import com.bytedance.rshrinker.log.Logger;
+import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -35,9 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;

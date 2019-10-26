@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.AppPlugin;
-import com.bytedance.rshrinker.log.Logger;
+import wang.imallen.blog.rshrinker.log.Logger;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

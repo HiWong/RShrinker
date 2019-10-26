@@ -1,10 +1,12 @@
+import wang.imallen.blog.rshrinker.ShrinkerPlugin
+
 apply plugin: 'com.android.application'
-apply plugin: com.bytedance.rshrinker.ShrinkerPlugin
+apply plugin: ShrinkerPlugin
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "wang.imallen.blog.rshrinker.demo"
+        applicationId "wang.wang.imallen.blog.rshrinker.demo"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -22,8 +24,7 @@ android {
 rshrink{
     inlineR true
     skipDebugInlineR false
-    //注意:之所以wang.imallen.blog.rshrinker.demo下的R文件在dex中找不到，并不是rshrinker没起作用，而是因为android gradle plugin把它优化掉了
-    skipRPkgs=["wang.imallen.blog","android.support.v7"]
+    skipRPkgs=["wang.wang.imallen.blog","android.support.v7"]
 }
 
 dependencies {
@@ -37,6 +38,8 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
+
+    implementation project(":applemodule")
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

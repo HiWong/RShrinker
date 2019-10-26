@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
-import com.bytedance.rshrinker.log.Logger;
+import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;

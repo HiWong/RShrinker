@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.bytedance.rshrinker;
+package wang.imallen.blog.rshrinker;
 
-import com.bytedance.rshrinker.log.Logger;
+import wang.imallen.blog.rshrinker.log.Logger;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -104,6 +104,9 @@ class ShrinkRClassVisitor extends ClassVisitor {
                 }
                 String typeName = owner.substring(owner.lastIndexOf('/') + 1);
                 String key = typeName + '.' + fieldName;
+
+                System.out.println("typeName:" + typeName + ",key:" + key);
+
                 if (rSymbols.containsKey(key)) {
                     Integer value = rSymbols.get(key);
                     if (value == null)
