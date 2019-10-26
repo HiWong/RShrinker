@@ -1,5 +1,4 @@
 apply plugin: 'groovy'
-//apply plugin: 'java-library'
 apply plugin: 'maven'
 
 apply from:'http://tosv.byted.org/obj/ttclient-android/upload.gradle'
@@ -27,11 +26,7 @@ repositories{
 }
 
 
-
 //注释以防止跟upload.gradle中的上传配置冲突
-//另外，后面classpath改为com.bytedance.frameworks:rshrink:0.3.5这样，而插件名仍然为com.bytedance.rshrinker
-
-
 uploadArchives{
     repositories.mavenDeployer{
         repository(url:'http://maven.byted.org/repository/life/'){
