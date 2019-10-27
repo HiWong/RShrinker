@@ -26,10 +26,10 @@ repositories{
 }
 
 
-//注释以防止跟upload.gradle中的上传配置冲突
+
 uploadArchives{
     repositories.mavenDeployer{
-        repository(url:'http://maven.byted.org/repository/life/'){
+        repository(url:'http://wang.imallen.blog/repository/life/'){
             authentication(userName:"$USER_NAME",password:"$PASS")
         }
         pom.groupId='wang.imallen.blog.shrink'
