@@ -18,10 +18,9 @@ package wang.imallen.blog.rshrinker;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Function;
 
 abstract class ClassesProcessor implements Processor {
-    protected final Function<byte[], byte[]> classTransform;
+    protected final IClassTransform classTransform;
     protected final Path src;
     protected final Path dst;
 
@@ -29,7 +28,7 @@ abstract class ClassesProcessor implements Processor {
      * @param src Source path, can be resolved as a directory or a jar file
      * @param dst Destination path
      */
-    ClassesProcessor(Function<byte[], byte[]> classTransform,
+    ClassesProcessor(IClassTransform classTransform,
                      Path src, Path dst) {
         this.classTransform = classTransform;
         this.src = src;

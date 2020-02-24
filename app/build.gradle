@@ -21,10 +21,11 @@ android {
     }
 }
 
-rshrink{
+detectClass{
     inlineR true
     skipDebugInlineR false
-    skipRPkgs=["wang.wang.imallen.blog","android.support.v7"]
+    skipRPkgs=["wang.wang.imallen.blog"]
+    targetClasses=["android.support.v7.widget.AbsActionBarView"]
 }
 
 dependencies {

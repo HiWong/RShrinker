@@ -33,7 +33,7 @@ public class ShrinkerPlugin implements Plugin<Project> {
             throw new UnsupportedOperationException("Plugin 'shrinker' can only apply with 'com.android.application'");
         }
         AppExtension android = project.getExtensions().getByType(AppExtension.class);
-        ShrinkerExtension config = project.getExtensions().create("rshrink", ShrinkerExtension.class);
+        DetectClassExtension config = project.getExtensions().create("detectClass", DetectClassExtension.class);
         android.registerTransform(new InlineRTransform(config));
 
         project.afterEvaluate(it -> {

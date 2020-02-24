@@ -16,7 +16,6 @@
 
 package wang.imallen.blog.rshrinker;
 
-import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -29,18 +28,25 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.function.Function;
+
+import wang.imallen.blog.rshrinker.log.Logger;
 
 class DirProcessor extends ClassesProcessor {
     private static PathMatcher CASE_R_FILE =
             FileSystems.getDefault().getPathMatcher("regex:^R\\.class|R\\$[a-z]+\\.class$");
 
+    /*
     private static DirectoryStream.Filter<Path> CLASS_TRANSFORM_FILTER =
             path -> Files.isDirectory(path)
                     || (Files.isRegularFile(path)
                     && !CASE_R_FILE.matches(path.getFileName()));
+    */
+    private static DirectoryStream.Filter<Path> CLASS_TRANSFORM_FILTER =
+            path -> Files.isDirectory(path)
+                    || (Files.isRegularFile(path));
 
-    DirProcessor(Function<byte[], byte[]> classTransform, Path src, Path dst) {
+
+    DirProcessor(IClassTransform classTransform, Path src, Path dst) {
         super(classTransform, src, dst);
     }
 
@@ -66,7 +72,7 @@ class DirProcessor extends ClassesProcessor {
                     Files.createDirectories(dst);
                 }
                 if (source.getFileName().toString().endsWith(".class")) {
-                    byte[] bytes = classTransform.apply(Files.readAllBytes(source));
+                    byte[] bytes = classTransform.apply(getClassName(source), Files.readAllBytes(source), source);
                     Files.write(target, bytes);
                 } else {
                     // copy non-class file!
@@ -79,6 +85,10 @@ class DirProcessor extends ClassesProcessor {
                 throw e;
             }
         }
+    }
+
+    private String getClassName(Path source) {
+        return source.toString();
     }
 
     private List<Path> resolveSources() {

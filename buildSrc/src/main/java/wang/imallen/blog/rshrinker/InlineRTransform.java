@@ -25,7 +25,6 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
-import wang.imallen.blog.rshrinker.log.Logger;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -40,21 +39,24 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
+import wang.imallen.blog.rshrinker.log.Logger;
+
 import static com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES;
 
 /**
  * Transform classes with {@link InlineRProcessor}.
  */
 class InlineRTransform extends Transform {
-    private final ShrinkerExtension config;
+    private final DetectClassExtension config;
 
-    InlineRTransform(ShrinkerExtension config) {
+    InlineRTransform(DetectClassExtension config) {
         this.config = config;
         InlineContext.config = config;
     }
+
     @Override
     public String getName() {
-        return "inlineR";
+        return "detectClass";
     }
 
     @Override
@@ -89,6 +91,7 @@ class InlineRTransform extends Transform {
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         Logger.d("InlineTransform.transform()");
+        System.out.println("now start to inlineRTransform");
         if (!config.inlineR) {
             Logger.life("skip inlineR transform!");
             return;
@@ -104,29 +107,28 @@ class InlineRTransform extends Transform {
         String buildType = styleables.getParentFile().getName();
         outputProvider.deleteAll();
         Collection<TransformInput> inputs = transformInvocation.getInputs();
-        if (shouldInline(buildType)) {
-            RSymbols rSymbols = new RSymbols().from(inputs);
-            if (!rSymbols.isEmpty()) {
-                new WriteStyleablesProcessor(rSymbols, styleables).proceed();
-                Function<QualifiedContent, Path> call = input -> {
-                    Format format;
-                    if (input instanceof DirectoryInput) {
-                        format = Format.DIRECTORY;
-                    } else if (input instanceof JarInput) {
-                        format = Format.JAR;
-                    } else {
-                        throw new UnsupportedOperationException("Unknown format readAll input " + input);
-                    }
-                    File f = outputProvider.getContentLocation(input.getName(), input.getContentTypes(),
-                            input.getScopes(), format);
-                    if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
-                    return f.toPath();
-                };
-                new InlineRProcessor(inputs, new ClassTransform(rSymbols), call).proceed();
-                Logger.life("{} consume {}ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
-                return;
+
+        //RSymbols rSymbols = new RSymbols().from(inputs);
+
+        //new WriteStyleablesProcessor(rSymbols, styleables).proceed();
+        Function<QualifiedContent, Path> call = input -> {
+            Format format;
+            if (input instanceof DirectoryInput) {
+                format = Format.DIRECTORY;
+            } else if (input instanceof JarInput) {
+                format = Format.JAR;
+            } else {
+                throw new UnsupportedOperationException("Unknown format readAll input " + input);
             }
-        }
+            File f = outputProvider.getContentLocation(input.getName(), input.getContentTypes(),
+                    input.getScopes(), format);
+            if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+            return f.toPath();
+        };
+        new InlineRProcessor(inputs, new ClassTransform(), call).proceed();
+        Logger.life("{} consume {}ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);
+
+
         // just copy them...
         for (TransformInput input : inputs) {
             input.getDirectoryInputs().forEach(dir -> {
@@ -141,15 +143,20 @@ class InlineRTransform extends Transform {
             input.getJarInputs().parallelStream().forEach(jarInput -> {
                 File dest = outputProvider.getContentLocation(jarInput.getName(),
                         jarInput.getContentTypes(), jarInput.getScopes(), Format.JAR);
+
                 if (dest.exists()) {
+                    /*
                     throw new RuntimeException("Jar file " + jarInput.getName() + " already exists!" +
                             " src: " + jarInput.getFile().getPath() + ", dest: " + dest.getPath());
+                    */
+                } else {
+                    try {
+                        FileUtils.copyFile(jarInput.getFile(), dest);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
                 }
-                try {
-                    FileUtils.copyFile(jarInput.getFile(), dest);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+
             });
         }
         Logger.i("{} copy files {} ms", transformInvocation.getContext().getPath(), System.currentTimeMillis() - start);

@@ -17,7 +17,7 @@ package wang.imallen.blog.rshrinker;
 
 import java.util.List;
 
-public class ShrinkerExtension {
+public class DetectClassExtension {
     public boolean inlineR = true;
 
     public boolean skipDebugInlineR = false;
@@ -26,6 +26,10 @@ public class ShrinkerExtension {
      * 使用类似skipPkgs=["com.baidu.swan","com.baidu.searchbox"]这样
      */
     public List<String> skipRPkgs;
+
+    public List<String> targetClasses;
+
+    public List<String> skipClasses;
 
     public boolean isInlineR() {
         return inlineR;
@@ -49,5 +53,13 @@ public class ShrinkerExtension {
 
     public void setSkipRPkgs(List<String> skipRPkgs) {
         this.skipRPkgs = skipRPkgs;
+    }
+
+    public List<String> getTargetClasses() {
+        return targetClasses;
+    }
+
+    public void setTargetClasses(List<String> targetClasses) {
+        this.targetClasses = targetClasses;
     }
 }

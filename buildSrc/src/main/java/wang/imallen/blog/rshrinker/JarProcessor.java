@@ -29,7 +29,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
@@ -39,12 +38,13 @@ import java.util.zip.ZipOutputStream;
 
 class JarProcessor extends ClassesProcessor {
 
-    JarProcessor(Function<byte[], byte[]> classTransform, Path src, Path dst) {
+    JarProcessor(IClassTransform classTransform, Path src, Path dst) {
         super(classTransform, src, dst);
     }
 
     @Override
     public void proceed() {
+
         try {
             List<Pair<String, byte[]>> entryList = readZipEntries(src)
                     .parallelStream()
@@ -82,7 +82,7 @@ class JarProcessor extends ClassesProcessor {
 
     private Pair<String, byte[]> transformClassBlob(Pair<String, byte[]> entry) {
         byte[] bytes = entry.second;
-        entry.second = classTransform.apply(bytes);
+        entry.second = classTransform.apply(entry.first,bytes, src);
         return entry;
     }
 

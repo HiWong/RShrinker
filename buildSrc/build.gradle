@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-apply from:'http://tosv.byted.org/obj/ttclient-android/upload.gradle'
+//apply from:'http://tosv.byted.org/obj/ttclient-android/upload.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -25,16 +25,14 @@ repositories{
     jcenter()
 }
 
-
-
 uploadArchives{
     repositories.mavenDeployer{
-        repository(url:'http://wang.imallen.blog/repository/life/'){
-            authentication(userName:"$USER_NAME",password:"$PASS")
+        repository(url:'http://maven.byted.org/repository/life/'){
+            authentication(userName:"deploy",password:"bytedance123")
         }
         pom.groupId='wang.imallen.blog.shrink'
         pom.artifactId='plugin'
-        pom.version='0.3.5'
+        pom.version='0.3.6-r12'
     }
 }
 

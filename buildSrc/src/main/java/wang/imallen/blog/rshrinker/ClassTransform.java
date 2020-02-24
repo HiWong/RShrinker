@@ -20,30 +20,40 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
-import java.util.function.Function;
+import java.nio.file.Path;
 
-import static org.objectweb.asm.ClassReader.SKIP_DEBUG;
-import static org.objectweb.asm.ClassReader.SKIP_FRAMES;
+class ClassTransform implements IClassTransform {
 
-class ClassTransform implements Function<byte[], byte[]> {
-    private RSymbols rSymbols;
+    private int count = 0;
 
-    ClassTransform(RSymbols rSymbols) {
-        this.rSymbols = rSymbols;
+    ClassTransform() {
     }
 
     @Override
-    public byte[] apply(byte[] origin) {
+    public byte[] apply(String className, byte[] origin, Path source) {
+        ++count;
+
+        System.out.println("ClassTransform.apply(),className:" + className + ",source:" + source.toString());
+
+        if (className.contains("lambda$")||className.contains("module-info")||className.contains("with$")) {
+            return origin;
+        }
+
         ClassReader reader = new ClassReader(origin);
+        /*
         PredicateClassVisitor precondition = new PredicateClassVisitor();
         reader.accept(precondition, SKIP_DEBUG | SKIP_FRAMES);
         if (!precondition.isAttemptToVisitR()) {
             return origin;
         }
+        */
+
         // don't pass reader to the writer.
         // or it will copy 'CONSTANT POOL' that contains no used entries to lead proguard running failed!
         ClassWriter writer = new ClassWriter(0);
-        ClassVisitor visitor = new ShrinkRClassVisitor(writer, rSymbols);
+        //ClassVisitor visitor = new ShrinkRClassVisitor(writer, rSymbols);
+        ClassVisitor visitor = new DetectClassOnlyVisitor(writer,
+                InlineContext.config.targetClasses, source);
         reader.accept(visitor, 0);
         return writer.toByteArray();
     }

@@ -1,9 +1,9 @@
 package wang.imallen.blog.rshrinker;
 
-import wang.imallen.blog.rshrinker.log.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import wang.imallen.blog.rshrinker.log.Logger;
 
 /**
  * author: AllenWang
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class InlineContext {
 
-    public static ShrinkerExtension config;
+    public static DetectClassExtension config;
 
     public static void parseShrinkerExtension() {
         if (config.skipRPkgs == null || config.skipRPkgs.size() < 1) {
@@ -27,5 +27,10 @@ public class InlineContext {
                 Logger.i("after parse,pkg:" + pkg)
         );
 
+        List<String> tmpClasses = new ArrayList<>();
+        config.targetClasses.forEach(clazzName ->
+                tmpClasses.add(clazzName.replace(".", "/"))
+        );
+        config.targetClasses = tmpClasses;
     }
 }

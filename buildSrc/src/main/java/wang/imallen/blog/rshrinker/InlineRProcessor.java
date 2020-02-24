@@ -29,10 +29,10 @@ import java.util.stream.Stream;
 final class InlineRProcessor implements Processor {
     private Collection<TransformInput> inputs;
     private Function<QualifiedContent, Path> getTargetPath;
-    private Function<byte[], byte[]> transform;
+    private IClassTransform transform;
 
     InlineRProcessor(Collection<TransformInput> inputs,
-                     Function<byte[], byte[]> transform,
+                     IClassTransform transform,
                      Function<QualifiedContent, Path> getTargetPath) {
         this.inputs = inputs;
         this.getTargetPath = getTargetPath;
