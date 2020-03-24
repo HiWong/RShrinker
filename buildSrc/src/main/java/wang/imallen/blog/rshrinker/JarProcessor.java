@@ -18,6 +18,7 @@ package wang.imallen.blog.rshrinker;
 
 import com.google.common.collect.ImmutableList;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
@@ -50,7 +51,10 @@ class JarProcessor extends ClassesProcessor {
                     .parallelStream()
                     .map(this::transformClassBlob)
                     .collect(Collectors.toList());
-            if (entryList.isEmpty()) return;
+            if (entryList.isEmpty()) {
+                simpleCopy();
+                return;
+            }
             try (OutputStream fileOut = Files.newOutputStream(dst)) {
                 ByteArrayOutputStream buffer = zipEntries(entryList);
                 buffer.writeTo(fileOut);
@@ -58,6 +62,10 @@ class JarProcessor extends ClassesProcessor {
         } catch (IOException e) {
             throw new RuntimeException("Reading jar entries failure", e);
         }
+    }
+
+    private void simpleCopy() throws IOException {
+        FileUtils.copyFile(src.toFile(), dst.toFile());
     }
 
     private ByteArrayOutputStream zipEntries(List<Pair<String, byte[]>> entryList) throws IOException {
@@ -82,7 +90,7 @@ class JarProcessor extends ClassesProcessor {
 
     private Pair<String, byte[]> transformClassBlob(Pair<String, byte[]> entry) {
         byte[] bytes = entry.second;
-        entry.second = classTransform.apply(entry.first,bytes, src);
+        entry.second = classTransform.apply(entry.first, bytes, src);
         return entry;
     }
 

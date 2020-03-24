@@ -32,7 +32,7 @@ uploadArchives{
         }
         pom.groupId='wang.imallen.blog.shrink'
         pom.artifactId='plugin'
-        pom.version='0.3.6-r12'
+        pom.version='0.3.6-r13'
     }
 }
 

@@ -46,10 +46,10 @@ import static com.android.build.api.transform.QualifiedContent.DefaultContentTyp
 /**
  * Transform classes with {@link InlineRProcessor}.
  */
-class InlineRTransform extends Transform {
+class DetectClassTransform extends Transform {
     private final DetectClassExtension config;
 
-    InlineRTransform(DetectClassExtension config) {
+    DetectClassTransform(DetectClassExtension config) {
         this.config = config;
         InlineContext.config = config;
     }

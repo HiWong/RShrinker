@@ -34,7 +34,7 @@ public class ShrinkerPlugin implements Plugin<Project> {
         }
         AppExtension android = project.getExtensions().getByType(AppExtension.class);
         DetectClassExtension config = project.getExtensions().create("detectClass", DetectClassExtension.class);
-        android.registerTransform(new InlineRTransform(config));
+        android.registerTransform(new DetectClassTransform(config));
 
         project.afterEvaluate(it -> {
                     InlineContext.parseShrinkerExtension();

@@ -48,6 +48,7 @@ class DirProcessor extends ClassesProcessor {
 
     DirProcessor(IClassTransform classTransform, Path src, Path dst) {
         super(classTransform, src, dst);
+        System.out.println("DirProcessor, src:"+src+",dst:"+dst);
     }
 
     @Override
